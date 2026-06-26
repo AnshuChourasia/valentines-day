@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>February With You</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --rose: #d94f70;
+  --rose-deep: #8f2845;
+  --blush: #fff0f4;
+  --cream: #fffaf7;
+  --ink: #241418;
+  --muted: #7c6068;
+  --line: rgba(143, 40, 69, 0.14);
+  --glass: rgba(255, 250, 247, 0.72);
+  --shadow: 0 28px 80px rgba(143, 40, 69, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Inter", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(217, 79, 112, 0.20), transparent 28rem),
+    radial-gradient(circle at 86% 86%, rgba(143, 40, 69, 0.14), transparent 30rem),
+    linear-gradient(135deg, rgba(255, 250, 247, 0.88), rgba(255, 240, 244, 0.72)),
+    url("bg.jpg") center / cover fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(143, 40, 69, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 40, 69, 0.032) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+button {
+  font: inherit;
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  transform: rotate(45deg);
+  background: rgba(217, 79, 112, 0.42);
+  animation: floatUp var(--duration) ease-in forwards;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.heart::before {
+  left: -7px;
+}
+
+.heart::after {
+  top: -7px;
+}
+
+.slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 5vw, 64px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 650ms ease, transform 650ms ease;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.layout {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(24px, 5vw, 60px);
+}
+
+.card {
+  width: min(460px, 100%);
+  padding: clamp(26px, 4vw, 42px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+  text-align: center;
+}
+
+.card.center {
+  margin: auto;
+  text-align: center;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: var(--rose-deep);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rose);
+  box-shadow: 0 0 0 7px rgba(217, 79, 112, 0.10);
+}
+
+h1,
+h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--rose-deep);
+}
+
+h1 {
+  font-size: clamp(2.8rem, 6.8vw, 5.7rem);
+  line-height: 0.86;
+}
+
+h2 {
+  font-size: clamp(2.35rem, 6vw, 4.8rem);
+  line-height: 0.92;
+}
+
+p {
+  margin-top: 22px;
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+.actions,
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  justify-content: center;
+}
+
+.buttons {
+  justify-content: center;
+}
+
+.btn {
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  color: white;
+  background: linear-gradient(135deg, var(--rose-deep), var(--rose));
+  box-shadow: 0 16px 34px rgba(217, 79, 112, 0.28);
+}
+
+.btn-soft {
+  color: var(--rose-deep);
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.photo-frame {
+  position: relative;
+  width: min(360px, 86vw);
+  aspect-ratio: 4 / 5;
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--blush);
+  box-shadow: var(--shadow);
+  animation: gentleFloat 5200ms ease-in-out infinite;
+}
+
+.photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.photo-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1000ms ease, transform 1400ms ease;
+}
+
+.photo-frame img.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.caption {
+  width: min(360px, 86vw);
+  margin: 18px auto 0;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--rose-deep);
+  background: rgba(255, 250, 247, 0.70);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 42px rgba(143, 40, 69, 0.10);
+  text-align: center;
+  font-weight: 700;
+}
+
+.question-card {
+  width: min(520px, 100%);
+}
+
+.love-text {
+  margin-top: 18px;
+  color: var(--rose);
+  animation: breathe 2600ms ease-in-out infinite;
+}
+
+.note {
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.sparkle {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--rose);
+  animation: sparkleOut 1100ms ease-out forwards;
+}
+
+.sound-state {
+  display: inline-block;
+  min-width: 72px;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) rotate(45deg) scale(0.7);
+  }
+  12% {
+    opacity: 0.72;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-115vh) translateX(var(--drift)) rotate(45deg) scale(1.08);
+  }
+}
+
+@keyframes gentleFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.7deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0.7deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes sparkleOut {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0.2);
+  }
+}
+
+@media (max-width: 1180px) and (max-height: 820px) {
+  .slide {
+    padding: 22px;
+  }
+
+  .layout {
+    width: min(900px, 100%);
+    grid-template-columns: 1fr 0.82fr;
+    gap: 28px;
+  }
+
+  .card {
+    width: min(430px, 100%);
+    padding: 28px;
+  }
+
+  h1 {
+    font-size: clamp(2.75rem, 5.4vw, 4.6rem);
+    line-height: 0.9;
+  }
+
+  h2 {
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+  }
+
+  p {
+    margin-top: 16px;
+    line-height: 1.62;
+  }
+
+  .photo-frame {
+    width: min(300px, 32vw);
+  }
+
+  .caption {
+    width: min(300px, 32vw);
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 900px), (max-height: 680px) {
+  .slide {
+    overflow-y: auto;
+    align-items: start;
+    padding: 24px 18px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding-block: 18px;
+  }
+
+  .card {
+    margin: auto;
+  }
+
+  .photo-frame {
+    width: min(280px, 74vw);
+  }
+
+  .caption {
+    width: min(280px, 74vw);
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    overflow-y: hidden;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .card {
+    text-align: center;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .photo-frame {
+    width: min(310px, 82vw);
+  }
+}
+
+@media (max-width: 440px) {
+  .slide {
+    padding: 18px;
+  }
+
+  .card {
+    border-radius: 22px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="ambient" id="ambient"></div>
+
+<main class="slider" aria-live="polite">
+  <section class="slide active" id="slide1">
+    <div class="layout">
+      <div class="card">
+        <span class="kicker">A little February note</span>
+        <h1>February feels softer with you.</h1>
+        <p>
+          Some people make ordinary days feel warm. You do that without even trying.
+          This is a small page, but it carries a very real feeling.
+        </p>
+        <div class="actions">
+          <button class="btn btn-soft" id="soundBtn" type="button">
+            Music <span class="sound-state">off</span>
+          </button>
+          <button class="btn btn-primary" type="button" onclick="nextSlide()">Begin</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="photo-frame">
+          <img src="1.jpeg" class="active" alt="A favorite memory">
+          <img src="2.jpeg" alt="A sweet memory">
+          <img src="3.jpeg" alt="A beautiful memory">
+        </div>
+        <div class="caption">Three little memories, one favorite person.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide2">
+    <div>
+      <div class="photo-frame">
+        <img src="1.jpeg" class="active" alt="A favorite memory">
+        <img src="2.jpeg" alt="A sweet memory">
+        <img src="3.jpeg" alt="A beautiful memory">
+      </div>
+      <div class="caption">I keep coming back to moments like these.</div>
+      <div class="actions" style="justify-content:center;">
+        <button class="btn btn-primary" type="button" onclick="nextSlide()">One more thing</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide3">
+    <div class="card center question-card">
+      <span class="kicker">The question</span>
+      <h2>Will you be my Valentine?</h2>
+      <p class="note">No pressure. Just one tiny question from someone who smiles because of you.</p>
+      <div class="buttons">
+        <button class="btn btn-primary" type="button" onclick="yesClicked()">Yes</button>
+        <button class="btn btn-soft" id="noBtn" type="button">No</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide4">
+    <div class="card center question-card">
+      <span class="kicker">My answer to your yes</span>
+      <h2>Happy Valentine's Day</h2>
+      <p class="love-text">I love you.</p>
+      <p class="note">Thank you for being my favorite kind of peace.</p>
+    </div>
+  </section>
+</main>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.querySelector("#bgMusic");
+const soundBtn = document.querySelector("#soundBtn");
+const soundState = document.querySelector(".sound-state");
+const noBtn = document.querySelector("#noBtn");
+const ambient = document.querySelector("#ambient");
+const slides = document.querySelectorAll(".slide");
+let current = 0;
+let playing = false;
+
+function showSlide(index) {
+  slides[current].classList.remove("active");
+  current = index;
+  slides[current].classList.add("active");
+}
+
+function nextSlide() {
+  showSlide(Math.min(current + 1, slides.length - 1));
+}
+
+function startPhotoLoops() {
+  document.querySelectorAll(".photo-frame").forEach((frame) => {
+    const images = frame.querySelectorAll("img");
+    if (images.length < 2) return;
+
+    let index = 0;
+    images.forEach((image, imageIndex) => {
+      image.classList.toggle("active", imageIndex === 0);
+    });
+
+    setInterval(() => {
+      images[index].classList.remove("active");
+      index = (index + 1) % images.length;
+      images[index].classList.add("active");
+    }, 2600);
+  });
+}
+
+soundBtn.addEventListener("click", async () => {
+  if (!playing) {
+    try {
+      await music.play();
+      playing = true;
+      soundState.textContent = "on";
+    } catch (error) {
+      soundState.textContent = "tap again";
+    }
+  } else {
+    music.pause();
+    playing = false;
+    soundState.textContent = "off";
+  }
+});
+
+function moveNo() {
+  const buttonWidth = noBtn.offsetWidth || 90;
+  const buttonHeight = noBtn.offsetHeight || 48;
+  const x = Math.random() * Math.max(1, window.innerWidth - buttonWidth - 24) + 12;
+  const y = Math.random() * Math.max(1, window.innerHeight - buttonHeight - 24) + 12;
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+  noBtn.style.zIndex = "10";
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  moveNo();
+});
+
+function yesClicked() {
+  showSlide(3);
+  burstSparkles();
+}
+
+function burstSparkles() {
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  for (let i = 0; i < 74; i++) {
+    const dot = document.createElement("span");
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 70 + Math.random() * 210;
+
+    dot.className = "sparkle";
+    dot.style.left = `${centerX}px`;
+    dot.style.top = `${centerY}px`;
+    dot.style.background = Math.random() > 0.5 ? "#d94f70" : "#f0a8b8";
+    dot.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+    dot.style.setProperty("--y", `${Math.sin(angle) * distance}px`);
+
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 1200);
+  }
+}
+
+function createHeart() {
+  const heart = document.createElement("span");
+  heart.className = "heart";
+  heart.style.left = `${Math.random() * 100}vw`;
+  heart.style.bottom = "-28px";
+  heart.style.setProperty("--drift", `${Math.random() * 90 - 45}px`);
+  heart.style.setProperty("--duration", `${7 + Math.random() * 4}s`);
+  heart.style.transform = `rotate(45deg) scale(${0.65 + Math.random() * 0.7})`;
+
+  ambient.appendChild(heart);
+  setTimeout(() => heart.remove(), 11000);
+}
+
+startPhotoLoops();
+setInterval(createHeart, 650);
+</script>
+</body>
+</html>
+
+
+
+
