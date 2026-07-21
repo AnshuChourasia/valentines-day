@@ -30,14 +30,7 @@ valentines-day/
 ├── music.mp3
 ├── images/
 └── README.md
-```
 
-## 📸 Preview
-
-Add a screenshot of your webpage here.
-
-```markdown
-![Valentine's Day Website Screenshot](images/screenshot.png)
 ```
 
 ## 🎯 What I Learned
